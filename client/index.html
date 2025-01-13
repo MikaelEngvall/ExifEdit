@@ -4,19 +4,18 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>EXIF Editor</title>
+  <script src="https://cdn.jsdelivr.net/npm/exifreader@4.12.0/dist/exif-reader.min.js"></script>
   <script src="script.js" defer></script>
   <script src="https://cdn.tailwindcss.com"></script>
 </head>
 <body class="bg-gray-100 flex items-center justify-center min-h-screen">
-  <div class="bg-white p-8 rounded shadow-md w-96">
+  <div class="bg-white p-8 rounded shadow-md w-full max-w-4xl">
     <h1 class="text-2xl font-bold mb-4">EXIF Editor</h1>
     <div id="dropZone" class="w-full h-32 border-2 border-dashed border-gray-400 flex items-center justify-center text-gray-500 mb-4">
-      Drag & Drop Image Here or Click to Upload
+      Drag & Drop Images Here or Click to Upload
     </div>
-    <input type="file" id="imageUpload" class="hidden" accept="image/*">
-    <img id="imagePreview" src="" alt="Image Preview" class="w-full hidden mb-4 rounded" />
-    <div id="exifData" class="text-sm"></div>
-    <button id="saveExif" class="mt-4 bg-blue-500 text-white px-4 py-2 rounded">Save EXIF</button>
+    <input type="file" id="imageUpload" class="hidden" accept="image/*" multiple>
+    <div id="previewContainer" class="grid grid-cols-2 gap-4 mb-4"></div>
   </div>
 </body>
 </html>

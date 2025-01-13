@@ -1,8 +1,6 @@
 const express = require("express");
 const multer = require("multer");
-const exif = require("exiftool-vendored").exiftool;
 const path = require("path");
-const fs = require("fs");
 const cors = require("cors");
 
 const app = express();
@@ -21,24 +19,15 @@ const storage = multer.diskStorage({
 
 const upload = multer({ storage });
 
-// Upload image and extract EXIF data
-app.post("/upload", upload.single("image"), async (req, res) => {
+app.post("/upload", upload.array("images", 10), (req, res) => {
   try {
-    const exifData = await exif.read(req.file.path);
-    res.json({ exifData, filePath: req.file.path });
+    const filePaths = req.files.map((file) => ({
+      filePath: file.path,
+      fileName: file.originalname,
+    }));
+    res.json(filePaths);
   } catch (err) {
-    res.status(500).json({ error: "Failed to read EXIF data." });
-  }
-});
-
-// Update EXIF data
-app.post("/update-exif", async (req, res) => {
-  const { filePath, exifUpdates } = req.body;
-  try {
-    await exif.write(filePath, exifUpdates);
-    res.json({ message: "EXIF data updated successfully." });
-  } catch (err) {
-    res.status(500).json({ error: "Failed to update EXIF data." });
+    res.status(500).json({ error: "Failed to upload images." });
   }
 });
 
